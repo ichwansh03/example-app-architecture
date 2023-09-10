@@ -13,6 +13,11 @@
         android:theme="@style/Theme.AppArchitecture"
         tools:targetApi="31">
         <activity
+            android:name=".viewmodels.ModelsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_models"
+            android:theme="@style/Theme.AppArchitecture" />
+        <activity
             android:name=".extras.DataActivity"
             android:exported="false" />
         <activity
