@@ -15,7 +15,8 @@ class PageActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPageBinding
     private var arrayList = ArrayList<PageModels>()
-    private var data = arrayOf("A","B","C","D","E","F","G","H","I","J")
+    private var data = arrayOf("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P")
+    private var data2 = arrayOf("1","2","3","4","5","6","7","8","9","10")
     private var loading = true
 
     private var pastVisibleItems = 0
@@ -55,6 +56,7 @@ class PageActivity : AppCompatActivity() {
                     if (loading && (visibleItemCount + pastVisibleItems) >= totalItemCount) {
                         loading = false
                         Toast.makeText(this@PageActivity, "this is the last item!", Toast.LENGTH_SHORT).show()
+                        getData2()
                         adapter.notifyDataSetChanged()
                         loading = true
                     }
@@ -66,6 +68,14 @@ class PageActivity : AppCompatActivity() {
     private fun getData(): ArrayList<PageModels>{
         for (i in data.indices){
             arrayList.add(PageModels(data[i]))
+        }
+
+        return arrayList
+    }
+
+    private fun getData2(): ArrayList<PageModels>{
+        for (i in data2.indices){
+            arrayList.add(PageModels(data2[i]))
         }
 
         return arrayList
