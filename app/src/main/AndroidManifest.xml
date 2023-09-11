@@ -13,7 +13,7 @@
         android:theme="@style/Theme.AppArchitecture"
         tools:targetApi="31">
         <activity
-            android:name=".livedata.LiveActivity"
+            android:name=".pagination.PageActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,12 +22,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".livedata.LiveActivity"
+            android:exported="false"/>
+
+        <activity
             android:name=".databinding.ui.DatabindActivity"
             android:exported="false" />
         <activity
             android:name=".bottomsheet.SheetActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"/>
         <activity
             android:name=".viewmodels.ModelsActivity"
             android:exported="false"
