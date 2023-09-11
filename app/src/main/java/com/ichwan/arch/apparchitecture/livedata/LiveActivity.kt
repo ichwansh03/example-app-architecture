@@ -2,6 +2,7 @@ package com.ichwan.arch.apparchitecture.livedata
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.ichwan.arch.apparchitecture.R
@@ -17,10 +18,17 @@ class LiveActivity : AppCompatActivity() {
         binding = ActivityLiveBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val nameObserver = Observer<String> { newName ->
-            binding.txname.text = model.changeName(newName)
-        }
+        binding.apply {
+            val nameObserver = Observer<String> { newName ->
+                txname.text = model.changeName(newName)
+            }
 
-        model.currentName.observe(this, nameObserver)
+            model.currentName.observe(this@LiveActivity, nameObserver)
+
+            buttonChange.setOnClickListener {
+                txname.text = model.currentName.setValue("Ichwan Sholehudin").toString()
+                Toast.makeText(this@LiveActivity, "name change to ${model.currentName}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

@@ -13,22 +13,20 @@
         android:theme="@style/Theme.AppArchitecture"
         tools:targetApi="31">
         <activity
-            android:name=".databinding.ui.ViewModelActivity"
-            android:exported="false" />
-        <activity
-            android:name=".databinding.ui.ObservableFieldActivity"
-            android:exported="false" />
-        <activity
-            android:name=".databinding.ui.DatabindActivity"
-            android:exported="false" />
-        <activity
-            android:name=".bottomsheet.SheetActivity"
-            android:exported="true">
+            android:name=".livedata.LiveActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".databinding.ui.DatabindActivity"
+            android:exported="false" />
+        <activity
+            android:name=".bottomsheet.SheetActivity"
+            android:exported="false">
         </activity>
         <activity
             android:name=".viewmodels.ModelsActivity"
