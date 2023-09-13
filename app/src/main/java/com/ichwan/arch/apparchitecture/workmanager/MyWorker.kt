@@ -16,17 +16,24 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.ichwan.arch.apparchitecture.R
 
-class MyWorker(context: Context, workerParameters: WorkerParameters) : Worker(context, workerParameters) {
+class MyWorker(context: Context, workerParameters: WorkerParameters) :
+    Worker(context, workerParameters) {
 
     companion object {
         const val CHANNEL_ID = "channel_id"
         const val NOTIFICATION_ID = 1
+        const val key = "WORKER_KEY"
     }
 
     override fun doWork(): Result {
-        Log.d("success", "doWork: Success function called")
-        showNotification()
-        return Result.success()
+
+        return try {
+            Log.d("Worker", inputData.getString(key).toString())
+            showNotification()
+            Result.success()
+        } catch (e: Exception){
+            Result.failure()
+        }
     }
 
     private fun showNotification() {
@@ -34,14 +41,16 @@ class MyWorker(context: Context, workerParameters: WorkerParameters) : Worker(co
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
 
-        val pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent,
-            PendingIntent.FLAG_IMMUTABLE)
+        val pendingIntent = PendingIntent.getActivity(
+            applicationContext, 0, intent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
 
         val notification = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("New Notification Task!")
             .setContentText("Subscribe on the channel")
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setPriority(NotificationCompat.PRIORITY_MAX)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
 
@@ -54,15 +63,19 @@ class MyWorker(context: Context, workerParameters: WorkerParameters) : Worker(co
                 description = channelDescription
             }
 
-            val notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager =
+                applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
             notificationManager.createNotificationChannel(channel)
         }
 
-        with(NotificationManagerCompat.from(applicationContext)) {
-            if (ActivityCompat.checkSelfPermission( applicationContext, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                applicationContext,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            with(NotificationManagerCompat.from(applicationContext)) {
                 notify(NOTIFICATION_ID, notification.build())
-                return
             }
         }
     }
