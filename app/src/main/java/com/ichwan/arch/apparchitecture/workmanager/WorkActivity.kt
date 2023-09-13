@@ -3,6 +3,7 @@ package com.ichwan.arch.apparchitecture.workmanager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.work.Constraints
+import androidx.work.Data
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
@@ -33,13 +34,9 @@ class WorkActivity : AppCompatActivity() {
     }
 
     private fun periodicWork() {
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
-            .build()
-
         val myRequest = PeriodicWorkRequest.Builder(MyWorker::class.java, 15, TimeUnit.MINUTES)
-            .setConstraints(constraints)
-            .addTag(TAG)
+            .setConstraints(constraints())
+            .setInputData(data())
             .build()
 
         WorkManager.getInstance(this)
@@ -47,15 +44,24 @@ class WorkActivity : AppCompatActivity() {
     }
 
     private fun oneTimeWork() {
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.UNMETERED)
-            .setRequiresCharging(true)
-            .build()
-
         val workRequest = OneTimeWorkRequest.Builder(MyWorker::class.java)
-            .setConstraints(constraints)
+            .setConstraints(constraints())
+            .setInputData(data())
             .build()
 
         WorkManager.getInstance(this).enqueue(workRequest)
+    }
+
+    private fun data(): Data {
+        return Data.Builder()
+            .putString(MyWorker.key, "Worker")
+            .build()
+    }
+
+    private fun constraints(): Constraints {
+        return Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .setRequiresCharging(true)
+            .build()
     }
 }
